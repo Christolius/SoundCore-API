@@ -99,7 +99,6 @@ async def get_currently_connected_device():
         return None
     elif sys.platform == "linux":
         try:
-            # Run bluetoothctl asynchronously without blocking the event loop
             proc = await asyncio.create_subprocess_exec(
                 "bluetoothctl", "devices", "Connected",
                 stdout=asyncio.subprocess.PIPE,
@@ -110,7 +109,6 @@ async def get_currently_connected_device():
 
             for line in output.splitlines():
                 parts = line.strip().split(" ", 2)
-                # Output format: "Device XX:XX:XX:XX:XX:XX Soundcore Motion+"
                 if len(parts) == 3 and parts[0] == "Device":
                     mac, name = parts[1], parts[2]
                     if "soundcore" in name.lower():
